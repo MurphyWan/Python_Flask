@@ -1,10 +1,12 @@
-# coding:utf-8
+# -*- coding:utf-8 -*-
 # author:MurphyWan
 
 from flask import Blueprint  # 引入蓝图，因为要顶一个route_user
 from flask import render_template
 from flask import request # 7-3 登录推出
 from flask import jsonify
+from common.models.User import User
+from common.libs.user.UserService import UserService
 
 # 以下是后台仪表盘前端页面的三个页面 ，登录、编辑和修改密码页面
 route_user = Blueprint('user_page', __name__)
@@ -41,6 +43,21 @@ def login():
         resp[ 'msg' ] = "请输入正确的登录密码！"
         return jsonify( resp )
 
+    # 校验用户名
+    user_info = User.query.filter_by(login_name  = login_name).first()
+    if not user_info:
+        resp['code'] = -1
+        resp['msg'] = "请输入正确的用户登录名和密码！-1"
+        return jsonify(resp)
+
+    # 校验密码；密码和salt是通过某种算法的出来的，所以
+    # 这里在 common/libs目录下创建user python包，并在其中创建UserService.py，即用户服务类
+
+    #common/libs/user/建立完毕UserService这个类之后，我们就可以验证了
+    if user_info.login_pwd != UserService.genePwd( login_pwd, user_info.login_salt ):
+        resp['code'] = -1
+        resp['msg'] = "请输入正确的用户登录名和密码！-2"
+        return jsonify(resp)
 
     return "%s - %s"%( login_name, login_pwd) # 测试下上面的两个变脸个是否可用
 

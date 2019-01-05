@@ -52,3 +52,4 @@ app.add_template_global(UrlManager.buildStaticUrl,
 app.add_template_global(UrlManager.buildUrl,
                         'buildUrl')  # 后面buildStaticUrl是方法名，将这UrlManager.buildStaticUrl类中的这个方法注入进来
 # 将这两个方法注入到模板里面去
+app.config['JSON_AS_ASCII'] = False # windows下，在浏览器显示jsonify返回的中文会直接显示ASCII码，而不是正常的中文，所以这里要设置False
