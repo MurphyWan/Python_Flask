@@ -14,7 +14,9 @@
 		</div>
 		<div class="col-md-6">
 			<div class="ibox-content">
-				<form class="m-t" role="form" action="{{ buildUrl('/user/login') }}" method="post">
+				<!--01一般我们异步提交时才会这么使用的，所以代开login.html，将form 换成div,将action删掉；写一个ajax提交；增加login_wrap类
+-->
+				<div class="m-t login_wrap" role="form" >
                     <div class="form-group text-center">
                         <h2 class="font-bold">登录</h2>
                     </div>
@@ -24,8 +26,10 @@
 					<div class="form-group">
 						<input type="password" name="login_pwd" class="form-control" placeholder="请输入登录密码">
 					</div>
-					<button type="submit" class="btn btn-primary block full-width m-b">登录</button>
-                </form>
+					<!--02将submit用button替换；增加do-login类;修改完毕登录，发现输入正确的用户名密码点击登录按钮无效，说明ajax奏效-->
+					<!--03打开web/static新建一个文件夹user-->
+					<button type="button" class="btn btn-primary block full-width m-b do-login">登录</button>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -39,4 +43,10 @@
 		</div>
 	</div>
 </div>
+{% endblock %}
+
+<!--插入js-->
+{% block js %}
+<script src="{{ buildStaticUrl('/js/user/login.js') }}"></script>
+
 {% endblock %}

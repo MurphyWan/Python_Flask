@@ -138,12 +138,26 @@ var common_ops = {
         $('html, body').animate({
             scrollTop: target.offset().top - 10
         }, 100);
+    },
+    buildUrl:function( path, params){
+        var url = "" + path;
+        var _paramUrl = "";
+        if ( params ){
+            _paramUrl = Object.keys( params ).map( function(k){
+                return [ encodeURIComponent( k ),encodeURIComponent( params[ k ] ) ].join("=");
+            }).join("&");
+
+            _paramUrl = "?" + _paramUrl
+        }
+        return url+_paramUrl;
     }
+
 };
 
 $(document).ready( function() {
     common_ops.init();
 });
+
 
 // 对Date的扩展，将 Date 转化为指定格式的String
 // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，

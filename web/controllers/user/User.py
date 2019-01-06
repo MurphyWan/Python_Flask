@@ -59,7 +59,9 @@ def login():
         resp['msg'] = "请输入正确的用户登录名和密码！-2"
         return jsonify(resp)
 
-    return "%s - %s"%( login_name, login_pwd) # 测试下上面的两个变脸个是否可用
+    return jsonify(resp) # 测试下上面的两个变量个是否可用
+    #一般我们异步提交时才会这么使用的，所以代开login.html，将form 换成div,将action删掉；写一个ajax提交；本系统大部分使用异步提交，为了增强用户的使用方式
+
 
 
 
