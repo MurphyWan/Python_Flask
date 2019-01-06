@@ -10,6 +10,17 @@ def index():
     return "Hello World"
 """
 from application import app
+
+'''
+统一拦截器 ， 都放在这里
+'''
+from web.interceptors.Authinterceptor import *
+
+
+
+'''
+蓝图功能，对所有url进行蓝图功能配置
+'''
 from web.controllers.index import route_index
 from web.controllers.user.User import route_user
 from web.controllers.static import route_static
@@ -18,8 +29,8 @@ from web.controllers.food.Food import route_food  # 商品管理
 from web.controllers.member.Member import route_member  # 会员管理
 from web.controllers.finance.Finance import route_finance  # 财务管理
 from web.controllers.stat.Stat import route_stat  # 统计管理
-
 # 注册蓝图
+
 app.register_blueprint(route_index, url_prefix='/')
 # 然后在入口文件manager.py中引入www.py，就是调用www中的所有变量
 

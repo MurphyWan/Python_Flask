@@ -13,3 +13,13 @@ AUTH_COOKIE_NAME = "mooc_food"
 2\manager.py作为本程序的入口，做好能有个扩展，这里引入一个非常好的工具,flask-script,相当于可以new一个manager
 安装好这个扩展后，我们在application.py中引入这个包
 """
+
+## 过滤url;    以/user/login开头的不需要验证，若验证则形成死循环；以上static开始的完全不需要验证登录
+IGNORE_URLS = [
+    "^/user/login"
+]
+
+IGNORE_CHECK_LOGIN_URLS = [
+    "^/static",
+    "^/favicon.ico"
+]
