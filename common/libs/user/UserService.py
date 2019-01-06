@@ -8,6 +8,19 @@ class UserService():
     写一些用户的核心操作和统一的方法都可以写在这个地方
     '''
 
+    #产生授权码； 需要传进来的参数就是一个user_info；同样用MD5的方式生成
+    @staticmethod
+    def geneAuthCode( user_info ):
+        # 实例化；由四部分组成的
+        m = hashlib.md5()
+        str = "%s-%s-%s-%s"%( user_info.uid, user_info.login_name,user_info.login_pwd, user_info.login_salt )
+
+        # 加密算法和下面genePwd一样，复制过来就行
+        m.update(str.encode("utf-8"))
+        return m.hexdigest()
+        # 通过拿到用户id，生成加密字符串，就知道用户有没有改变我们的cookie
+
+
     @staticmethod
     def genePwd(pwd, salt):
         '''
