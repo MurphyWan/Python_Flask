@@ -90,3 +90,9 @@ def edit():
 @route_user.route("/reset-pwd")
 def resetPwd():
     return render_template("user/reset_pwd.html")
+
+# 退出 ; 这个功能比较简单，只需要将cookie清空完了就可以退出了。具体就是清理cookie，并且跳到登录页面。
+@route_user.route( "/user/logout" )
+def logout():
+    response = make_response(  )
+
