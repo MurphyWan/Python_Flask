@@ -10,6 +10,8 @@ from common.libs.user.UserService import UserService
 from flask import make_response
 import json
 from application import app
+from flask import redirect
+from common.libs.UrlManager import UrlManager
 
 # 以下是后台仪表盘前端页面的三个页面 ，登录、编辑和修改密码页面
 route_user = Blueprint('user_page', __name__)
@@ -92,7 +94,8 @@ def resetPwd():
     return render_template("user/reset_pwd.html")
 
 # 退出 ; 这个功能比较简单，只需要将cookie清空完了就可以退出了。具体就是清理cookie，并且跳到登录页面。
-@route_user.route( "/user/logout" )
+@route_user.route( "/logout" )
 def logout():
-    response = make_response(  )
-
+    response = make_response( redirect( UrlManager.buildUrl( "/user/login" ) ) )
+    response.delete_cookie( app.config[ 'AUTH_COOKIE_NAME' ] ) # 清空cookie
+    return response
