@@ -3,7 +3,7 @@
 
 # 并不做什么事情，只是将flask的事件记录进来
 from application import  app
-from flask import request, redirect
+from flask import request, redirect, g
 from common.models.User import User
 from common.libs.user.UserService import UserService
 from common.libs.UrlManager import UrlManager
@@ -27,6 +27,10 @@ def before_request():
 
 
     user_info = check_login()
+    # g变量，默认等于空,这里需要from flask import g；如果这个人登录的话，我们就等于当前这个用户，然后在仪表盘(web/controller/index.py)页面就可以引入这个g变量
+    g.current_user = None
+    if user_info:
+        g.current_user = user_info
 
 
     #判断是否正好为登录页面，如果正好是，则不作判断
