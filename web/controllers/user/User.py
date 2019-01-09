@@ -12,6 +12,7 @@ import json
 from application import app
 from flask import redirect
 from common.libs.UrlManager import UrlManager
+from common.libs.Helper import ops_render
 
 # 以下是后台仪表盘前端页面的三个页面 ，登录、编辑和修改密码页面
 route_user = Blueprint('user_page', __name__)
@@ -86,7 +87,7 @@ def login():
 
 @route_user.route("/edit")
 def edit():
-    return render_template("user/edit.html")
+    return ops_render("user/edit.html")
 
 
 @route_user.route("/reset-pwd")
