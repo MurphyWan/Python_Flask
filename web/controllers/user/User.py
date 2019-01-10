@@ -2,7 +2,7 @@
 # author:MurphyWan
 
 from flask import Blueprint  # 引入蓝图，因为要顶一个route_user
-from flask import render_template
+from flask import ops_render
 from flask import request  # 7-3 登录推出
 from flask import jsonify
 from common.models.User import User
@@ -26,7 +26,7 @@ def login():
         # run ， 打开浏览器，输入127.0.0.1:8999/user/login，发现404。是因为我们用www.py统一root加载一行
         # from web.controllers.user.User import route_user
         # 渲染页面
-        return render_template("user/login.html")  # 将练习文档中事先准备好的static和templates文件夹复制到web目录下
+        return ops_render("user/login.html")  # 将练习文档中事先准备好的static和templates文件夹复制到web目录下
     # 问什么还是报错，说找不到模板？是因为application.py中重构了MVC架构，而默认的template目录是在app（应用程序根目录）中的
     # 所以，为了解决这个问题，我们要改写application.py中的内容def __init__(self, import_name， template_folder = ),增加若干参数
 
@@ -92,7 +92,7 @@ def edit():
 
 @route_user.route("/reset-pwd")
 def resetPwd():
-    return render_template("user/reset_pwd.html")
+    return ops_render("user/reset_pwd.html")
 
 # 退出 ; 这个功能比较简单，只需要将cookie清空完了就可以退出了。具体就是清理cookie，并且跳到登录页面。
 @route_user.route( "/logout" )
