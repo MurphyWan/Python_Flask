@@ -2,7 +2,6 @@
 # author:MurphyWan
 
 from flask import Blueprint  # 引入蓝图，因为要顶一个route_user
-from flask import ops_render
 from flask import request  # 7-3 登录推出
 from flask import jsonify
 from common.models.User import User
