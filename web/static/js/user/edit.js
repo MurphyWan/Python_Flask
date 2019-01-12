@@ -1,4 +1,6 @@
 ;
+//这个js文件是老师已经帮我们写好的，直接用就可以了。其目的是将前台提交的用户昵称和手机号和邮箱传递到后台更新数据库
+//定义变量user_edit_ops，里面有2个方法：init和eventBind，和所有其他js一样。
 var user_edit_ops = {
     init:function(){
         this.eventBind();
@@ -56,6 +58,7 @@ var user_edit_ops = {
     }
 };
 
+//当我们jquery加载完成的时候，我们执行我们的init方法就可以了。
 $(document).ready( function(){
     user_edit_ops.init();
 } );

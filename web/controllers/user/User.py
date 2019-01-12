@@ -3,12 +3,12 @@
 
 from flask import Blueprint  # 引入蓝图，因为要顶一个route_user
 from flask import request  # 7-3 登录推出
-from flask import jsonify
+from flask import jsonify, g
 from common.models.User import User
 from common.libs.user.UserService import UserService
 from flask import make_response
 import json
-from application import app
+from application import app, db
 from flask import redirect
 from common.libs.UrlManager import UrlManager
 from common.libs.Helper import ops_render
@@ -84,9 +84,41 @@ def login():
     # 一般我们异步提交时才会这么使用的，所以代开login.html，将form 换成div,将action删掉；写一个ajax提交；本系统大部分使用异步提交，为了增强用户的使用方式
 
 
-@route_user.route("/edit")
+@route_user.route("/edit", methods = [ "GET", "POST" ] )
 def edit():
-    return ops_render("user/edit.html")
+    if request.method == "GET" :
+        return ops_render("user/edit.html")
+
+    resp = { 'code':200, 'msg':'操作成功～', 'data':{} }
+    req = request.values
+    nickname = req['nickname'] if 'nickname' in req else ''
+    email = req['email'] if 'email' in req else ''
+
+    if nickname is None or len( nickname ) < 1:
+        resp['code']  = -1
+        resp['msg'] = "请输入符合规范的姓名～"
+        return jsonify( resp )
+
+    if email is None or len( email ) < 1:
+        resp['code']  = -1
+        resp['msg'] = "请输入符合规范的邮箱～"
+        return jsonify( resp )
+
+    #当前用户已经查出来了，所以不用再查了。读出来就好。;引入g变量？？？
+    user_info = g.current_user
+    #将user的nickname和email进行更新
+    user_info.nickname = nickname
+    user_info.email = email
+
+    #然后进行统一的数据库提交;import db
+    db.session.add( user_info )
+    db.seesion.commit()
+
+    #统一提交完成后，我们就告诉用户更改成功了
+    return jsonify(resp)
+
+
+
 
 
 @route_user.route("/reset-pwd")
