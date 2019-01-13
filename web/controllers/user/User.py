@@ -112,7 +112,7 @@ def edit():
 
     #然后进行统一的数据库提交;import db
     db.session.add( user_info )
-    db.seesion.commit()
+    db.session.commit()
 
     #统一提交完成后，我们就告诉用户更改成功了
     return jsonify(resp)
