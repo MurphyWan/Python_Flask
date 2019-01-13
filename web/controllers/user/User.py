@@ -91,10 +91,10 @@ def edit():
 
     resp = { 'code':200, 'msg':'操作成功～', 'data':{} }
     req = request.values
-    nickname = req['nickname'] if 'nickname' in req else ''
+    old_password = req['old_password'] if 'old_password' in req else ''
     email = req['email'] if 'email' in req else ''
 
-    if nickname is None or len( nickname ) < 1:
+    if old_password is None or len( old_password ) < 1:
         resp['code']  = -1
         resp['msg'] = "请输入符合规范的姓名～"
         return jsonify( resp )
@@ -107,7 +107,7 @@ def edit():
     #当前用户已经查出来了，所以不用再查了。读出来就好。;引入g变量？？？
     user_info = g.current_user
     #将user的nickname和email进行更新
-    user_info.nickname = nickname
+    user_info.old_password = old_password
     user_info.email = email
 
     #然后进行统一的数据库提交;import db
@@ -121,9 +121,49 @@ def edit():
 
 
 
-@route_user.route("/reset-pwd")
+# 依然是用GET和POST两种方式展示提交的
+@route_user.route("/reset-pwd", methods= ["GET","POST"])
 def resetPwd():
-    return ops_render("user/reset_pwd.html")
+    # 如果请求是GET，我们就进行展示就可以了
+    if request.method == "GET":
+        return ops_render("user/reset_pwd.html")
+
+    resp = { 'code':200, 'msg':'操作成功', 'data':{} }
+    req = request.values
+
+
+    old_password = req['old_password'] if  'old_password' in req else ''
+    new_password = req['new_password'] if  'new_password' in req else ''
+
+    # 同样进行参数有效性判断,对原密码和新密码
+    if old_password is None or len(old_password) <6:
+        resp['code'] = -1
+        resp['msg'] = "请输入符合规范的原始密码"
+        return jsonify(resp)
+    #新密码要进行2次判断，空或者长度不足
+    if new_password is None or len(new_password) <6:
+        resp['code'] = -1
+        resp['msg'] = "请输入符合规范的新密码"
+        return jsonify(resp)
+    #新旧密码一样
+    if old_password == new_password:
+        resp['code'] = -1
+        resp['msg'] = "请重新输入符合规范的新密码，新旧密码不能相同哦！"
+        return jsonify(resp)
+    #以上参数已经校验完了。
+
+    # 下一步,进行密码的更改。同样的从g.current_user取出当前的uesr对象
+    user_info = g.current_user
+    #注意，修改密码可不是明文哦！！！UserService.py
+    user_info.login_pwd = UserService.genePwd( new_password , user_info.login_salt)
+
+    db.session.add( user_info )
+    db.session.commit() #统一提交数据库
+    return jsonify( resp ) #统一提交返回
+
+
+
+
 
 # 退出 ; 这个功能比较简单，只需要将cookie清空完了就可以退出了。具体就是清理cookie，并且跳到登录页面。
 @route_user.route( "/logout" )
