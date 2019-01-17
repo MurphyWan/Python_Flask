@@ -79,7 +79,7 @@ def check_login():
     if user_info is None:
         return False
 
-    if auth_info[0] != UserService.geneAuthCode( user_info ):
+    if auth_info[0] != UserService.geneAuthCode( user_info ): # 产生授权码当中有一个参数，就是user_info.login_pwd，所以修改了用户密码之后拦截器会登出并跳转到登录页面
         return False
 
     # 以上测试了所有的假，剩下的就是真，如下：

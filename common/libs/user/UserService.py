@@ -13,7 +13,7 @@ class UserService():
     def geneAuthCode( user_info ):
         # 实例化；由四部分组成的
         m = hashlib.md5()
-        str = "%s-%s-%s-%s"%( user_info.uid, user_info.login_name,user_info.login_pwd, user_info.login_salt )
+        str = "%s-%s-%s-%s"%( user_info.uid, user_info.login_name,user_info.login_pwd, user_info.login_salt ) #因为这里有了user_info.login_pwd，所以更新了用户密码后，拦截器会要求重新登录
 
         # 加密算法和下面genePwd一样，复制过来就行
         m.update(str.encode("utf-8"))
