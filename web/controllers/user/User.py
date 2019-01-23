@@ -91,10 +91,10 @@ def edit():
 
     resp = { 'code':200, 'msg':'操作成功～', 'data':{} }
     req = request.values
-    old_password = req['old_password'] if 'old_password' in req else ''
+    nickname = req['nickname'] if 'nickname' in req else ''
     email = req['email'] if 'email' in req else ''
 
-    if old_password is None or len( old_password ) < 1:
+    if nickname is None or len( nickname ) < 1:
         resp['code']  = -1
         resp['msg'] = "请输入符合规范的姓名～"
         return jsonify( resp )
@@ -107,7 +107,7 @@ def edit():
     #当前用户已经查出来了，所以不用再查了。读出来就好。;引入g变量？？？
     user_info = g.current_user
     #将user的nickname和email进行更新
-    user_info.old_password = old_password
+    user_info.nickname = nickname
     user_info.email = email
 
     #然后进行统一的数据库提交;import db
