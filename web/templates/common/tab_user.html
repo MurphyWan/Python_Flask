@@ -1,3 +1,8 @@
+<!--用模板方式很快实现通用的tab；还有选中高亮，就是选中就是高亮，只是加了个current的class-->
+<!--用if来做判断-->
+<!--这时，选中2个当中的哪一个都没有高亮显示，是因为没有将值传过来,来到controller/user/User.py-->
+<!--return ops_render("user/edit.html", { 'current': 'edit'})-->
+<!--return ops_render("user/reset_pwd.html", { 'current': 'reset-pwd'})-->
 <div class="row  border-bottom">
     <div class="col-lg-12">
         <div class="tab_title">
@@ -5,7 +10,7 @@
                 <li {% if current == "edit" %} class="current" {% endif %}>
                     <a href="{{ buildUrl('/user/edit') }}">信息编辑</a>
                 </li>
-                <li {% if current == "reset-pwd" %} class="current" {% endif %}>
+                <li {% if current == 'reset-pwd' %} class="current" {% endif %}>
                     <a href="{{ buildUrl('/user/reset-pwd') }}">修改密码</a>
                 </li>
             </ul>

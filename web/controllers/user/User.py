@@ -88,7 +88,7 @@ def login():
 @route_user.route("/edit", methods = [ "GET", "POST" ] )
 def edit():
     if request.method == "GET" :
-        return ops_render("user/edit.html")
+        return ops_render("user/edit.html", { 'current': 'edit'}) # 为了tab选中有高亮，用json格式传变量
 
     resp = { 'code':200, 'msg':'操作成功～', 'data':{} }
     req = request.values
@@ -127,7 +127,7 @@ def edit():
 def resetPwd():
     # 如果请求是GET，我们就进行展示就可以了
     if request.method == "GET":
-        return ops_render("user/reset_pwd.html")
+        return ops_render("user/reset_pwd.html", { 'current': 'reset-pwd'}) # 为了tab选中有高亮，用json格式传变量
 
     resp = { 'code':200, 'msg':'操作成功', 'data':{} }
     req = request.values

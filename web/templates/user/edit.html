@@ -1,19 +1,21 @@
 {% extends "common/layout_main.html" %}
 {% block content %}
-<div class="row  border-bottom">
-    <div class="col-lg-12">
-        <div class="tab_title">
-            <ul class="nav nav-pills">
-                <li class="current">
-                    <a href="{{ buildUrl('/user/edit') }}">信息编辑</a>
-                </li>
-                <li>
-                    <a href="{{ buildUrl('/user/edit') }}">修改密码</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+{% include "common/tab_user.html" %}
+<!--<div class="row  border-bottom">-->
+    <!--<div class="col-lg-12">-->
+        <!--<div class="tab_title">-->
+            <!--<ul class="nav nav-pills">-->
+                <!--&lt;!&ndash;edit.html和reset_pwd.html中有同样一段代码。就是tab页；因此在common/新建tab_user.html&ndash;&gt;-->
+                <!--<li class="current">-->
+                    <!--<a href="{{ buildUrl('/user/edit') }}">信息编辑</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<a href="{{ buildUrl('/user/edit') }}">修改密码</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 <div class="row m-t  user_edit_wrap">
     <div class="col-lg-12">
         <h2 class="text-center">账号信息编辑</h2>
