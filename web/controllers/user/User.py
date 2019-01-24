@@ -66,7 +66,8 @@ def login():
 
     # 一般都是用cookie的方式来存储，不用session，当session存在多台服务器上的情况，存在不共享的情况，需要用一种非常复杂的方式处理。
     # cookie的好处是，放在客户端。这里import make_response，制造一个返回头
-    response = make_response(json.dumps(resp))  # 需要返回的是登录成功
+    # response = make_response(json.dumps(resp))  # 需要返回的是登录成功
+    response = make_response(json.dumps({ 'code':200, 'msg':'登录成功~~' }))  # 需要返回的是登录成功
     # 设置cookie;set_cookie (cookie名，cookie值)
     # response.set_cookie( "mooc_food", "%s#%s"%( "", user_info.uid) ) # 用"#"号拼接; cookie是明文的，所以要对前面%s要进行加密;
     # 打开UserService.py 实现上述的加密过程,定义静态方法geneAuthCode()
@@ -75,7 +76,7 @@ def login():
     # -->在se_setting.py中增加 AUTH_COOKIE_NAME,值为"mooc_food"
 
     #将上文的"mooc_food"，通过配置文件方式改写，这样，以后该cookie就该配置更新就好，不要去提交代码了。新的方式如下：
-    response.set_cookie( app.config['AUTH_COOKIE_NAME'], "%s#%s" % ( UserService.geneAuthCode(user_info), user_info.uid ))
+    response.set_cookie( app.config['AUTH_COOKIE_NAME'], "%s#%s" % ( UserService.geneAuthCode(user_info), user_info.uid ) , 60*60*24*120)
 
     #然后,注释掉原有的return jsonify(resp)，将response返回就可以啦
     return response
@@ -159,6 +160,12 @@ def resetPwd():
 
     db.session.add( user_info )
     db.session.commit() #统一提交数据库
+
+    #统一进行一次cookie的刷新，类似于登录功能,将登录功能的代码复制过来就可以啦
+    response = make_response(json.dumps( resp )) #改成resp统一回归
+    response.set_cookie(app.config['AUTH_COOKIE_NAME'], "%s#%s" % (UserService.geneAuthCode(user_info), user_info.uid), 60*60*24*120) #保存120天
+
+
     return jsonify( resp ) #统一提交返回
 
 
