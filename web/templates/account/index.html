@@ -58,11 +58,16 @@
             </tr>
             </thead>
             <tbody>
+            <!--做个判断，如果list是有的-->
+            {% if list %}
+                <!--这里进行循环，模板循环的语法很简单-->
+                {% for item in list %}
             <tr>
-                <td>1</td>
-                <td>编程浪子2</td>
-                <td>11012031511</td>
-                <td>apanly@163.com</td>
+                <!--2019/01/26 02 第一个展示的是id；然后是nickname；mobile；俄买了-->
+                <td>{{ item.uid }}</td>
+                <td>{{ item.nickname }}</td>
+                <td>{{ item.mobile }}</td>
+                <td>{{ item.email }}</td>
                 <td>
                     <a href="{{ buildUrl('/account/info') }}">
                         <i class="fa fa-eye fa-lg"></i>
@@ -76,6 +81,11 @@
                     </a>
                 </td>
             </tr>
+                {% endfor %}
+            <!--如果list没有数据，则else，也要进行统一的输出<tr><td colspan="5"></td></tr>，这句将5个单元格合并起来-->
+            {% else %}
+            <tr><td colspan="5">暂无数据~~</td></tr>
+            {% endif %}
             </tbody>
         </table>
 
