@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # 2019/01/26 01 账号管理
-from flask import Blueprint,request
+from flask import Blueprint,request,redirect
 from common.libs.Helper import ops_render, iPagination
 from common.models.User import User
+from common.libs.UrlManager import UrlManager
 from application import app,db
 
 
@@ -44,9 +45,26 @@ def index():
     # 接下来，我们开始讨论分页，要知道总共有多少条记录？每页显示多少条？一共几页？Flask有插件支持分页功能，不过这种比较简单的功能，建议不要使用插件了
 
 
+# 详情 2019/02/02
+# 通过当前的id取得是谁，然后进行展示就可以了
 @route_account.route( "/info" )
 def info():
-    return ops_render( "account/info.html" )
+    resp_data = {}
+    req = request.args # request.args,与request.values的区别，args是只取get参数；values是是将我们所取的所有参数拼装好放入dict
+    uid = int( req.get('id', 0 ) )
+    reback_url = UrlManager.buildUrl("account/index")
+    if uid < 1:        # 如果小于1说明没有
+        return redirect( reback_url ) #那么就直接返回到页表页面
+
+
+    info = User.query.filter_by( uid = uid ).first() # 先查一下这条uid是否存在
+    if not info:       # 如果查不到这个人，就回到列表页面
+        return redirect( reback_url )
+
+
+    resp_data['info'] = info # 如果查到，就把信息传到前端展示就可以了
+
+    return ops_render( "account/info.html", resp_data )
 
 @route_account.route( "/set" )
 def set():
